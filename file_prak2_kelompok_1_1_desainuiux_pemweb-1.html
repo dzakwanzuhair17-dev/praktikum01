@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Praktikum 2 - Form Pemesanan Barang</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #e9e9e9;
+    color: #222;
+    font: 12px Arial, Helvetica, sans-serif;
+  }
+  .browser {
+    width: min(900px, 96%);
+    margin: 18px auto;
+    border: 2px solid #777;
+    background: #f4f4f4;
+    box-shadow: 0 1px 4px #aaa;
+  }
+  .browser-top {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    background: linear-gradient(#d9d9d9, #bcbcbc);
+    border-bottom: 2px solid #777;
+  }
+  .browser-icons { font-size: 17px; white-space: nowrap; }
+  .address {
+    flex: 1;
+    height: 19px;
+    border: 2px inset #ddd;
+    border-radius: 10px;
+    background: white;
+    padding: 1px 10px;
+    font-size: 10px;
+  }
+  .browser-dot {
+    width: 32px; height: 15px; border: 1px solid #777;
+    border-radius: 12px; background: #eee;
+  }
+  .page { padding: 24px 4.5% 20px; min-height: 530px; }
+  .nav {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto 30px;
+    padding: 6px 10px;
+    max-width: 540px;
+    border: 1px solid #777;
+    background: #fff;
+    gap: 0;
+  }
+  .nav a {
+    color: #333;
+    text-decoration: none;
+    text-align: center;
+    flex: 1;
+    border-right: 1px solid #aaa;
+    font-size: 11px;
+  }
+  .nav a:last-child { border-right: 0; }
+  .content {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 26px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .photo-box {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 2px solid #777;
+    background:
+      linear-gradient(45deg, transparent calc(50% - 1px), #999 50%, transparent calc(50% + 1px)),
+      linear-gradient(-45deg, transparent calc(50% - 1px), #999 50%, transparent calc(50% + 1px)),
+      #fff;
+  }
+  .upload {
+    margin-top: 8px;
+    padding: 3px 8px;
+    border: 1px solid #555;
+    background: #eee;
+    font-size: 10px;
+  }
+  form { width: 100%; }
+  .field {
+    display: grid;
+    grid-template-columns: 135px minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  label, .field-label { padding-top: 4px; }
+  input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+    width: 100%;
+    min-width: 0;
+    border: 2px inset #ddd;
+    background: #fff;
+    color: #222;
+    padding: 4px 6px;
+    font: 12px Arial, sans-serif;
+  }
+  textarea { resize: vertical; min-height: 95px; line-height: 1.6; }
+  .details { line-height: 1.65; padding: 2px 4px; }
+  .checks { margin: 4px 0 12px 145px; color: #27853c; }
+  .checks label { display: block; padding: 2px 0; }
+  input[type="checkbox"] { vertical-align: middle; margin: 0 5px 0 0; }
+  .submit-row { margin: 26px 0 0 145px; }
+  button {
+    border: 1px solid #176b25;
+    border-radius: 2px;
+    padding: 7px 18px;
+    color: white;
+    background: #16852b;
+    font-weight: bold;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  button:hover { background: #106b20; }
+  .footer-line { margin-top: 28px; border-top: 1px solid #aaa; }
+  @media (max-width: 600px) {
+    .browser { width: 98%; margin: 8px auto; }
+    .page { padding: 18px 4% 20px; }
+    .nav { margin-bottom: 22px; padding: 6px 3px; }
+    .nav a { font-size: 9px; }
+    .content { grid-template-columns: 1fr; gap: 18px; }
+    .product-side { width: 145px; }
+    .field { grid-template-columns: 112px minmax(0, 1fr); gap: 7px; }
+    .checks, .submit-row { margin-left: 119px; }
+    input[type="text"], input[type="email"], input[type="tel"], select, textarea { font-size: 11px; }
+    .page { min-height: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="browser">
+  <div class="browser-top">
+    <span class="browser-icons">‹　›　×　⌂</span>
+    <div class="address">http://</div>
+    <div class="browser-dot"></div>
+  </div>
+
+  <main class="page">
+    <nav class="nav" aria-label="Navigasi utama">
+      <a href="#home">Home</a>
+      <a href="#register">Register</a>
+      <a href="#policy">Policy</a>
+      <a href="#about">About</a>
+    </nav>
+
+    <div class="content">
+      <aside class="product-side">
+        <div class="photo-box" role="img" aria-label="Tempat gambar produk"></div>
+        <button class="upload" type="button" onclick="document.getElementById('picture').click()">Upload Picture</button>
+        <input id="picture" type="file" accept="image/*" hidden onchange="previewPicture(event)">
+      </aside>
+
+      <form action="#" method="get" id="orderForm">
+        <div class="field">
+          <span class="field-label">Title Here:</span>
+          <div class="details"><strong>MacBook Air E800</strong></div>
+        </div>
+        <div class="field">
+          <span class="field-label">Description:</span>
+          <div class="details">Year: 2004<br>Model: <br>Condition: Mint</div>
+        </div>
+        <div class="field">
+          <label for="amount">Total Amount:</label>
+          <input id="amount" name="amount" type="text" value="£800">
+        </div>
+        <div class="field">
+          <label for="payto">Pay to:</label>
+          <input id="payto" name="payto" type="text" value="123-456-789-0">
+        </div>
+        <div class="field">
+          <label for="payment">Payment Type:</label>
+          <select id="payment" name="payment">
+            <option>Visa Debit</option>
+            <option>Mastercard</option>
+            <option>Bank Transfer</option>
+            <option>PayPal</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="holder">Account Holder:</label>
+          <input id="holder" name="holder" type="text" value="Name Here">
+        </div>
+        <div class="field">
+          <label for="account">Account No:</label>
+          <input id="account" name="account" type="text" value="123-456-789-0">
+        </div>
+
+        <div class="checks">
+          <label><input type="checkbox" name="mobile" checked>Send to Mobile Phone</label>
+          <label><input type="checkbox" name="email_notice" checked>Send email me of transaction</label>
+        </div>
+
+        <div class="field">
+          <label for="phone">Send to Mobile Phone:</label>
+          <input id="phone" name="phone" type="tel" value="1234567890, 1234567891">
+        </div>
+        <div class="field">
+          <label for="email">Send to Email:</label>
+          <input id="email" name="email" type="email" value="nama@example.com">
+        </div>
+
+        <div class="submit-row">
+          <button type="submit">Pay using QuikLink</button>
+        </div>
+      </form>
+    </div>
+    <div class="footer-line"></div>
+  </main>
+</div>
+<script>
+function previewPicture(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const box = document.querySelector('.photo-box');
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    box.style.background = 'center / contain no-repeat white';
+    box.style.backgroundImage = 'url("' + e.target.result + '")';
+  };
+  reader.readAsDataURL(file);
+}
+</script>
+</body>
+</html>
